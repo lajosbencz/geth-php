@@ -1,0 +1,21 @@
+{
+  "name": "lajosbencz/geth-php",
+  "description": "PHP wrapper for Geth JSON RPC",
+  "minimum-stability": "dev",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Lajos Bencz",
+      "email": "lazos@lazos.me"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "GethApi\\": "src/GethApi"
+    }
+  },
+  "require": {
+  },
+  "require-dev": {
+  }
+}
