@@ -20,7 +20,7 @@ class GethApi implements GethApiInterface
     ];
 
     protected $_options = [];
-    protected $_curl = null;
+    protected $_address = null;
     protected $_id = 0;
 
     /**
@@ -48,19 +48,7 @@ class GethApi implements GethApiInterface
             $options = [];
         }
         $this->_options = array_merge(self::$_defaultOptions, $options);
-        $this->_curl = curl_init('http://' . $this->_options['host'] . ':' . $this->_options['port']);
-        curl_setopt($this->_curl, CURLOPT_CUSTOMREQUEST, 'POST');
-        curl_setopt($this->_curl, CURLOPT_RETURNTRANSFER, true);
-    }
-
-    /**
-     * Close CURL session
-     */
-    function __destruct()
-    {
-        if (is_resource($this->_curl)) {
-            curl_close($this->_curl);
-        }
+        $this->_address = 'http://'.$this->_options['host'] . ':' . $this->_options['port'];
     }
 
     /**
@@ -90,15 +78,19 @@ class GethApi implements GethApiInterface
             'id' => $id,
         ];
         $json = json_encode($data);
-        curl_setopt($this->_curl, CURLOPT_POSTFIELDS, $json);
-        curl_setopt($this->_curl, CURLOPT_HTTPHEADER, [
+        $curl = curl_init($this->_address);
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'POST');
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $json);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, [
             'Content-Type: application/json',
             'Content-Length: ' . strlen($json)
         ]);
-        $result = curl_exec($this->_curl);
+        $result = curl_exec($curl);
         if (!$result) {
-            throw new \RuntimeException(curl_error($this->_curl), curl_errno($this->_curl));
+            throw new \RuntimeException(curl_error($curl), curl_errno($curl));
         }
+        curl_close($curl);
         $data = json_decode($result, $this->_options['assoc']);
         if($this->_options['assoc']) {
             if (isset($data['error'])) {
