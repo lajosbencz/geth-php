@@ -12,7 +12,7 @@ namespace GethApi;
  * @method string net_peerCount() Returns number of peers currently connected to the client.
  * @method string eth_protocolVersion() Returns the current ethereum protocol version.
  * @method object|array|bool eth_syncing() Returns an object with data about the sync status or false.
- * @hetmod string eth_coinbase() Returns the client coinbase address.
+ * @method string eth_coinbase() Returns the client coinbase address.
  * @method bool eth_mining() Returns true if client is actively mining new blocks.
  * @method string eth_hashrate() Returns the number of hashes per second that the node is mining with.
  * @method string eth_gasPrice() Returns the current price per gas in wei.
